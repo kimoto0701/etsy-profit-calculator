@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Etsy Seller Profit &amp; Fee Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Etsy Seller Profit &amp; Fee Calculator</h1>
+  <p><strong>Free tool.</strong> See exactly what you keep from an Etsy sale — every fee broken out, in US dollars (USD). Defaults are for a US seller — switch to the Japan preset if your shop's bank account is in Japan. No account, no sign-up, nothing is sent anywhere.</p>
+  <p class="note"><strong>Fees verified as of 2026-11-24.</strong> Most rates were corroborated by secondary sources citing Etsy's policy pages; the regulatory operating fee point — which countries it applies to (the United States and Japan are not on the list) — was confirmed on Etsy's official Help Center. Always re-check Etsy's Fees &amp; Payments Policy before relying on these rates.</p>
+</header>
+
+<div class="grid">
+  <section class="card" aria-label="Inputs">
+    <h2>Your sale</h2>
+    <div class="field"><label for="sellerCountry">Seller country (fee preset)</label><select id="sellerCountry"><option value="US" selected>United States — processing 3% + $0.25</option><option value="JP">Japan — processing 6.0% + $0.30</option></select><p class="help">Etsy Payments processing rates depend on the country of your shop's bank account. Japan-based shops pay 6.0% + $0.30 — noticeably more than the US rate. Both presets use a 0% regulatory operating fee (neither country is on Etsy's list).</p></div>
+    <div class="field"><label for="price">Item price ($)</label><input type="number" id="price" value="50" min="0" step="0.01"><p class="help">The price shown on your listing, before any discount.</p></div>
+    <div class="field"><label for="shippingCharged">Shipping charged to buyer ($)</label><input type="number" id="shippingCharged" value="5" min="0" step="0.01"><p class="help">What the buyer pays you for shipping. Use 0 for free shipping or digital items.</p></div>
+    <div class="field"><label for="discountPercent">Discount % (optional)</label><input type="number" id="discountPercent" value="0" min="0" max="100" step="0.1"><p class="help">Sale or coupon discount, applied to the item price only.</p></div>
+    <div class="field"><label for="cogs">Item cost / COGS ($)</label><input type="number" id="cogs" value="15" min="0" step="0.01"><p class="help">What the item costs you to make or buy.</p></div>
+    <div class="field"><label for="shippingCost">Shipping cost you pay ($)</label><input type="number" id="shippingCost" value="6" min="0" step="0.01"><p class="help">The postage / delivery cost you actually pay.</p></div>
+    <div class="field"><label for="packaging">Packaging cost ($)</label><input type="number" id="packaging" value="1" min="0" step="0.01"><p class="help">Box, mailer, labels, inserts and similar.</p></div>
+    <div class="field"><label for="regulatoryPercent">Regulatory fee % (varies by country)</label><input type="number" id="regulatoryPercent" value="0" min="0" max="100" step="0.01"><p class="help">US and Japan sellers: 0% — neither country is on Etsy's Regulatory Operating fee list (confirmed on Etsy's official Help Center, 2026-11-24). Sellers in some other countries pay a small %. Edit if it applies to you.</p></div>
+    <div class="field check"><input type="checkbox" id="adsEnabled"><div><label for="adsEnabled">This sale came from Etsy Offsite Ads (optional)</label><p class="help">Optional fee, only on ad-attributed sales. Etsy charges 15%, or 12% for shops over $10,000 in 12-month sales. It is charged on the total order value.</p></div></div>
+    <div class="field" id="adsPercentRow" style="display:none"><label for="adsPercent">Offsite Ads fee %</label><input type="number" id="adsPercent" value="15" min="0" max="100" step="0.1"><p class="help">Use 15 or 12, depending on your shop's sales level.</p></div>
+  </section>
+
+  <section class="card" aria-label="Results">
+    <h2>What you keep</h2>
+    <table>
+      <tr><td>Total revenue (after discount, incl. shipping charged)</td><td id="outRevenue">$0.00</td></tr>
+      <tr><td>Discount given</td><td id="outDiscount">$0.00</td></tr>
+      <tr><th colspan="2">Etsy fees</th></tr>
+      <tr><td>Listing fee <span class="help">— $0.20 per item; renews every 4 months and per sale for quantity 1</span></td><td id="outListing">$0.00</td></tr>
+      <tr><td>Transaction fee <span class="help">— 6.5% of price + shipping charged, after discount</span></td><td id="outTransaction">$0.00</td></tr>
+      <tr><td>Payment processing <span class="help" id="processingNote">— 3% + $0.25 on the total order amount (United States)</span></td><td id="outProcessing">$0.00</td></tr>
+      <tr><td>Regulatory fee <span class="help">— % you entered above; 0% for US and Japan sellers</span></td><td id="outRegulatory">$0.00</td></tr>
+      <tr><td>Offsite Ads fee <span class="help">— optional, only if enabled</span></td><td id="outAds">$0.00</td></tr>
+      <tr class="total"><td>Total fees</td><td id="outTotalFees">$0.00</td></tr>
+      <tr><td>Your costs (COGS + shipping + packaging)</td><td id="outSellerCosts">$0.00</td></tr>
+      <tr class="total"><td>Total costs (fees + your costs)</td><td id="outTotalCosts">$0.00</td></tr>
+      <tr><td>Profit margin</td><td id="outMargin">0.00%</td></tr>
+      <tr><td>Break-even price <span class="help">— item price where profit = $0, other inputs unchanged</span></td><td id="outBreakEven">$0.00</td></tr>
+    </table>
+    <p>Net profit</p>
+    <p class="profit" id="outProfit">$0.00</p>
+  </section>
+</div>
+
+<section class="card" style="margin-top:20px" aria-label="Waitlist">
+  <h2>Get the Pro version first</h2>
+  <p>Saved listings, bulk calculations, and target-margin pricing are planned for Pro. Join the waitlist to hear when it launches.</p>
+  <form id="waitlistForm" novalidate>
+    <div class="field"><label for="waitlistEmail">Email address</label><input type="email" id="waitlistEmail" placeholder="you@example.com" autocomplete="email"></div>
+    <button type="submit">Join the waitlist</button>
+    <p id="waitlistMessage" role="status"></p>
+  </form>
+  <p class="note">Demo: emails are stored locally in this browser only and are not sent anywhere yet.</p>
+</section>
+
+<footer>Estimates only — sales tax, gift wrap, currency conversion, VAT on fees, and multi-quantity listing fees are not modelled. Always confirm current rates in Etsy's Fees &amp; Payments Policy. Fees verified as of 2026-11-24 (see README.md): most rates corroborated by secondary sources; the regulatory operating fee point confirmed on Etsy's official Help Center.</footer>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
